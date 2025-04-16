@@ -2,63 +2,74 @@
 #include <fstream>
 #include <string>
 
-using namespace std;
-
-void writeToFile(const string &filename) {
-    ofstream outFile(filename, ios::out);
-    if (outFile.is_open()) {
-        string data;
-        cout << "Enter data to write to the file: ";
-        getline(cin, data);
-        outFile << data << endl;
-        outFile.close();
-        cout << "Data written successfully!" << endl;
-    } else {
-        cerr << "Error opening file for writing!" << endl;
+void writeToFile(const std::string& filename) {
+    std::ofstream outFile(filename, std::ios::app); // Open file in append mode
+    if (!outFile) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return;
     }
+
+    std::string data;
+    std::cout << "Enter data to write to the file (type 'exit' to stop):" << std::endl;
+    while (true) {
+        std::getline(std::cin, data);
+        if (data == "exit") break;
+        outFile << data << std::endl;
+    }
+    outFile.close();
+    std::cout << "Data written to file successfully." << std::endl;
 }
 
-void readFromFile(const string &filename) {
-    ifstream inFile(filename, ios::in);
-    if (inFile.is_open()) {
-        string line;
-        cout << "File content:\n";
-        while (getline(inFile, line)) {
-            cout << line << endl;
-        }
-        inFile.close();
-    } else {
-        cerr << "Error opening file for reading!" << endl;
+void readFromFile(const std::string& filename) {
+    std::ifstream inFile(filename);
+    if (!inFile) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return;
     }
+
+    std::string line;
+    std::cout << "Contents of the file:" << std::endl;
+    while (std::getline(inFile, line)) {
+        std::cout << line << std::endl;
+    }
+    inFile.close();
 }
 
-void appendToFile(const string &filename) {
-    ofstream outFile(filename, ios::app);
-    if (outFile.is_open()) {
-        string data;
-        cout << "Enter data to append to the file: ";
-        getline(cin, data);
-        outFile << data << endl;
-        outFile.close();
-        cout << "Data appended successfully!" << endl;
-    } else {
-        cerr << "Error opening file for appending!" << endl;
+void appendToFile(const std::string& filename) {
+    std::ofstream outFile(filename, std::ios::app); // Open file in append mode
+    if (!outFile) {
+        std::cerr << "Error opening file for appending." << std::endl;
+        return;
     }
+
+    std::string data;
+    std::cout << "Enter data to append to the file (type 'exit' to stop):" << std::endl;
+    while (true) {
+        std::getline(std::cin, data);
+        if (data == "exit") break;
+        outFile << data << std::endl;
+    }
+    outFile.close();
+    std::cout << "Data appended to file successfully." << std::endl;
 }
 
 int main() {
-    string filename = "file_management_tool.txt";
+    std::string filename;
     int choice;
 
+    std::cout << "File Management Tool" << std::endl;
+    std::cout << "Enter the filename (with .txt extension): ";
+    std::getline(std::cin, filename);
+
     do {
-        cout << "\nFile Management Tool:\n";
-        cout << "1. Write to file\n";
-        cout << "2. Read from file\n";
-        cout << "3. Append to file\n";
-        cout << "4. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
-        cin.ignore(); // To clear the input buffer
+        std::cout << "\nChoose an option:" << std::endl;
+        std::cout << "1. Write to file" << std::endl;
+        std::cout << "2. Read from file" << std::endl;
+        std::cout << "3. Append to file" << std::endl;
+        std::cout << "4. Exit" << std::endl;
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+        std::cin.ignore(); // Ignore the newline character left in the input buffer
 
         switch (choice) {
             case 1:
@@ -71,10 +82,10 @@ int main() {
                 appendToFile(filename);
                 break;
             case 4:
-                cout << "Exiting the program." << endl;
+                std::cout << "Exiting the program." << std::endl;
                 break;
             default:
-                cout << "Invalid choice. Please try again." << endl;
+                std::cout << "Invalid choice. Please try again." << std::endl;
         }
     } while (choice != 4);
 
